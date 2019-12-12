@@ -24,6 +24,16 @@ class Form extends Component {
   getTextInputValue = () => {
     this.setState({ qr_r: this.state.qr });
   };
+    downloadQR =() => {
+      const canvas = document.getElementById("1");
+      const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+      let downloadLink = document.createElement("a");
+      downloadLink.href = pngUrl;
+      downloadLink.download = "123456.png";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+};
   onFormSubmit = event => {
     event.preventDefault();
 
@@ -32,11 +42,13 @@ class Form extends Component {
   };
 
   render() {
-    const { qr } = this.state;
+    const { name,qr } = this.state;
 
     return (
-      <form>
-        <label>QR</label>
+      <form onSubmit={this.onFormSubmit}>
+        <label>Code</label>
+        <input type="text" name="name" value={name} onChange={this.handleChange} />
+        <label>URL</label>
         <input type="text" name="qr" value={qr} onChange={this.handleChange} />
         <button onClick={this.getTextInputValue}>Submit</button>
 
@@ -54,6 +66,7 @@ class Form extends Component {
             excavate: true
           }}
         />
+<a onClick={this.downloadQR}> Download QR </a>
       </form>
     );
   }
